@@ -1,0 +1,36 @@
+{
+  "name": "fastfood-guru",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack -d --watch",
+    "serve": "nodemon server/index.js",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drkwjhnsn/FastFood-Guru.git"
+  },
+  "author": "Derek Johnson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drkwjhnsn/FastFood-Guru/issues"
+  },
+  "homepage": "https://github.com/drkwjhnsn/FastFood-Guru#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "mysql": "^2.15.0",
+    "react": "^16.0.0",
+    "react-bootstrap": "^0.31.5",
+    "react-dom": "^16.0.0",
+    "sequelize": "^4.20.1"
+  }
+}
