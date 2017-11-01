@@ -25,7 +25,7 @@ export default class SignModal extends Component {
     this.handleConfirm = this.handleConfirm.bind(this);
     this.handleAvatar = this.handleAvatar.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.displayTab = this.displayTab.bind(this)
+    this.displayTab = this.displayTab.bind(this);
   }
 
   handleUsernameLogin(e) {
@@ -66,11 +66,16 @@ export default class SignModal extends Component {
     this.setState({ avatar: objectUrl });
   }
 
+  validateSignup() {
+    var { nameValid, zipValid, confirmValid } = this.state;
+    return ( nameValid === 'success' && zipValid === 'success' && confirmValid === 'success' );
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     var { username, zip, password, confirm, activeKey } = this.state;
     if (activeKey === 1) this.props.signIn({ username, password });
-    if (activeKey === 2) this.props.signUp({ username, zip, password });
+    if (activeKey === 2 && this.validateSignup()) this.props.signUp({ username, zip, password });
   }
 
   displayTab(key, e) {
