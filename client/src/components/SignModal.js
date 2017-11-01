@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, Nav, NavItem, Form, FormGroup, FormControl, ControlLabel, Col, Image } from 'react-bootstrap';
+import AvatarCanvas from './AvatarCanvas.js';
 
 export default class SignModal extends Component {
   constructor(props) {
@@ -12,18 +13,18 @@ export default class SignModal extends Component {
       zip: '',
       password: '',
       confirm: '',
-      avatar: '',
+      avatar: null,
       nameValid: null,
       zipValid: null,
       confirmValid: null
     }
     this.handleUsernameLogin = this.handleUsernameLogin.bind(this);
     this.handlePasswordLogin = this.handlePasswordLogin.bind(this);
+    this.handleAvatar = this.handleAvatar.bind(this);
     this.handleUsername = this.handleUsername.bind(this);
     this.handleZip = this.handleZip.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleConfirm = this.handleConfirm.bind(this);
-    this.handleAvatar = this.handleAvatar.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.displayTab = this.displayTab.bind(this);
   }
@@ -34,6 +35,10 @@ export default class SignModal extends Component {
 
   handlePasswordLogin(e) {
     this.setState({ passwordLogin: e.target.value });
+  }
+
+  handleAvatar(png) {
+    this.setState({ avatar: png });
   }
 
   handleUsername(e) {
@@ -61,11 +66,6 @@ export default class SignModal extends Component {
     this.setState({ confirm, confirmValid });
   }
 
-  handleAvatar(e) {
-    var objectUrl = URL.createObjectURL(e.target.files[0]);
-    this.setState({ avatar: objectUrl });
-  }
-
   validateSignup() {
     var { nameValid, zipValid, confirmValid } = this.state;
     return ( nameValid === 'success' && zipValid === 'success' && confirmValid === 'success' );
@@ -73,13 +73,13 @@ export default class SignModal extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    var { username, zip, password, confirm, activeKey } = this.state;
+    var { username, zip, password, avatar, confirm, activeKey } = this.state;
     if (activeKey === 1) this.props.signIn({ username, password });
-    if (activeKey === 2 && this.validateSignup()) this.props.signUp({ username, zip, password });
+    if (activeKey === 2 && this.validateSignup()) this.props.signUp({ username, zip, password, avatar });
   }
 
   displayTab(key, e) {
-    this.setState({ activeKey: key, username: '', password: '' });
+    this.setState({ activeKey: key});
   }
 
   render() {
@@ -115,9 +115,7 @@ export default class SignModal extends Component {
               Profile Picture
             </Col>
             <Col sm={6}>
-              <Image className="center-cropped" alt="avatar" src={this.state.avatar || 'defaultAvatar.png'} rounded></Image>
-              <FormControl  id="avatar-input" type="file" onChange={this.handleAvatar}/>
-              <label htmlFor="avatar-input">Choose Profile Picture</label>
+              <AvatarCanvas postImage={this.handleAvatar}/>
             </Col>
           </FormGroup>
           <FormGroup validationState={nameValid}>

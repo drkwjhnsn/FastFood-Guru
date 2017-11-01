@@ -1,12 +1,5 @@
-.center-cropped {
-  width: 171px;
-  height: 180px;
-  object-fit: cover;
-  object-position: center;
-}
-
 input[type="file"] {
-  height: 3px;
+  height: 1px;
   opacity: 0;
 }
 
@@ -16,4 +9,8 @@ label[for="avatar-input"] {
   border-radius: 4px;
   padding: 3px;
   width: 171px;
+}
+
+canvas {
+  border-radius: 7px;
 }

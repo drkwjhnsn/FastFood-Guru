@@ -44,8 +44,8 @@ export default class App extends Component {
     });
   }
 
-  signUp({ username, password, zip }) {
-    axios.post('/authenticate/signup', { username, password, zip })
+  signUp({ username, password, zip, avatar }) {
+    axios.post('/authenticate/signup', { username, password, zip, avatar })
     .then(({ data }) => {
       var { userId } = unwrap(data);
       this.setState({ userId });

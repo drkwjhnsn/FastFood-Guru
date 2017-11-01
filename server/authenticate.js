@@ -4,13 +4,15 @@ var jwt = require('jsonwebtoken');
 var db = require('../db/index.js');
 
 authenticate.post('/signup', (req, res) => {
-  var { username, password } = req.body;
+  var { username, password, zip, avatar } = req.body;
   var { hash, salt } = generateHash(password);
-  db.createUser(username, hash, salt)
+  db.createUser(hash, salt, username, zip, avatar)
   .then((results) => {
     res.status(200).send(createToken({userId: results.insertId}));
   })
-  .catch((e) => res.status(500).send(e));
+  .catch((e) => {
+    console.log(e);
+    res.status(500).send(e)});
 });
 
 authenticate.post('/signin', (req, res) => {
