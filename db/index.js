@@ -12,11 +12,23 @@ connection.connect((err) => {
   console.log('Successfully connected to database');
 });
 
+function checkIfNameExists(username) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `SELECT username FROM users WHERE username = '${username}' LIMIT 1`,
+      (err, [results]) => {
+        if (err) return reject(err);
+        return resolve(results);
+      }
+    );
+  });
+}
+
 function getUserFromId(user_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT * FROM users WHERE user_id = ${user_id}`,
-      (err, results) => {
+      `SELECT * FROM users WHERE user_id = ${user_id} LIMIT 1`,
+      (err, [results]) => {
         if (err) return reject(err);
         return resolve(results);
       }
@@ -39,7 +51,7 @@ function createUser(username, hash, salt) {
 function verifyUser(username) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT hash, salt, user_id FROM users WHERE username = '${username}'`,
+      `SELECT hash, salt, user_id FROM users WHERE username = '${username}' LIMIT 1`,
       (err, [results]) => {
         if (err) return reject(err);
         if (!results) return reject('Username not found');
@@ -49,4 +61,4 @@ function verifyUser(username) {
   })
 }
 
-module.exports = { getUserFromId, createUser, verifyUser };
+module.exports = { getUserFromId, createUser, verifyUser, checkIfNameExists };

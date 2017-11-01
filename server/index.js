@@ -10,10 +10,22 @@ app.use(bodyParser.json());
 
 app.use(express.static(__dirname + '/../client/public'));
 
-app.listen(3000, () => console.log('listening on port 3000'));
 
-app.get('/protected', authorize, (req, res) => {
-  res.status(200).send("you gots access");
+app.get('/user', authorize, (req, res) => {
+  db.getUserFromId(req.decoded.userId)
+  .then((results) => {
+    results.hash = undefined;
+    results.salt = undefined;
+    res.status(200).send(JSON.stringify(results));
+  })
 });
 
+app.post('/user/validate', (req, res) => {
+  db.checkIfNameExists(req.body.username)
+  .then((results) => res.status(200).send(results))
+  .catch((err) => res.status(500).send(err));
+})
+
 app.use('/authenticate', authenticate);
+
+app.listen(3000, () => console.log('listening on port 3000'));

@@ -1,0 +1,19 @@
+.center-cropped {
+  width: 171px;
+  height: 180px;
+  object-fit: cover;
+  object-position: center;
+}
+
+input[type="file"] {
+  height: 3px;
+  opacity: 0;
+}
+
+label[for="avatar-input"] {
+  text-align: center;
+  border: solid 1px #CCC;
+  border-radius: 4px;
+  padding: 3px;
+  width: 171px;
+}

@@ -11,7 +11,11 @@ export default (props) => (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav pullRight>
-        <NavItem eventKey={1} href="#" onSelect={props.signIn}>Sign In</NavItem>
+        {
+          (props.userId) ?
+          <NavItem eventKey={1} href="#" onSelect={props.signOut}>Sign Out</NavItem> :
+          <NavItem eventKey={1} href="#" onSelect={props.signIn}>Sign In</NavItem>
+        }
       </Nav>
     </Navbar.Collapse>
   </Navbar>
