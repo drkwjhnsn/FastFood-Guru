@@ -14,3 +14,7 @@ label[for="avatar-input"] {
 canvas {
   border-radius: 7px;
 }
+
+#map {
+  height: 100%;
+}
