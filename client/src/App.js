@@ -11,6 +11,7 @@ export default class App extends Component {
       userId: null,
       signInModal: false
     };
+
     this.showSignIn = this.showSignIn.bind(this);
     this.hideSignIn = this.hideSignIn.bind(this);
     this.signUp = this.signUp.bind(this);
