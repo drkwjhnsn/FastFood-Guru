@@ -5,7 +5,7 @@ export default (props) => (
   <Navbar>
     <Navbar.Header>
       <Navbar.Brand>
-        <a href="#">FastFood Guru</a>
+        <a href="#">fastFoodie</a>
       </Navbar.Brand>
       <Navbar.Toggle />
     </Navbar.Header>

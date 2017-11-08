@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var crypto = require('crypto');
+var emojiStrip = require('emoji-strip');
 
 connection = mysql.createConnection({
   host: 'localhost',
@@ -76,11 +77,16 @@ function verifyUser(username) {
   })
 }
 
-function submitComment({ restaurantId, authorId, title, text, author, authorAvatar }) {
+function submitComment({ restaurantId, authorId, text, author, authorAvatar }) {
+  authorId = authorId || -1;
+  authorAvatar = authorAvatar || 'default';
+  text = emojiStrip(text.split('').map((char) => (char === `'`) ? `''` : char ).join(''));
+  author = emojiStrip(author.split('').map((char) => (char === `'`) ? `''` : char ).join(''));
   return new Promise((resolve, reject) => {
     connection.query(
-      `INSERT INTO comments (restaurant_id, author_id, title, body, author, author_avatar) VALUES ('${restaurantId}', '${authorId}', '${title}', '${text}', '${author}', '${authorAvatar}')`,
+      `INSERT INTO comments (restaurant_id, author_id, body, author, author_avatar) VALUES ('${restaurantId}', '${authorId}', '${text}', '${author}', '${authorAvatar}')`,
       (err, results) => {
+        console.log(results, err);
         if (err) return reject(err);
         resolve();
       }
@@ -91,7 +97,7 @@ function submitComment({ restaurantId, authorId, title, text, author, authorAvat
 function getRestaurantComments(restaurant_id) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `SELECT * FROM comments WHERE restaurant_id = '${restaurant_id}'`,
+      `SELECT * FROM comments WHERE restaurant_id = '${restaurant_id}' ORDER BY creation DESC`,
       (err, results) => {
         if (err) return reject(err);
         resolve(results);
@@ -100,4 +106,29 @@ function getRestaurantComments(restaurant_id) {
   })
 }
 
-module.exports = { getUserFromId, createUser, verifyUser, checkIfNameExists, submitComment, getRestaurantComments };
+function getRestaurantDetails(restaurant_id) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `SELECT * FROM restaurants WHERE restaurant_id = '${restaurant_id}'`,
+      (err, results) => {
+        if (results.length) return resolve(results);
+        reject(err);
+      }
+    )
+  })
+}
+
+function newRestaurant(restaurant_id, hours, phone) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `INSERT INTO restaurants (restaurant_id, hours, phone) VALUES ('${restaurant_id}', '${hours}', '${phone}')`,
+      (err, results) => {
+        console.log(err);
+        if (err) return reject(err);
+        resolve();
+      }
+    )
+  })
+}
+
+module.exports = { getUserFromId, createUser, verifyUser, checkIfNameExists, submitComment, getRestaurantComments, getRestaurantDetails, newRestaurant };

@@ -3,25 +3,36 @@ import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 import Comment from './Comment.js';
 import CommentForm from './CommentForm.js';
+import StarRating from './StarRating.js';
+import Hours from './Hours.js';
 
 export default class RestaurantModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       comments: [],
+      details: {}
     }
     this.handleSubmitComment = this.handleSubmitComment.bind(this);
   }
 
   componentWillMount() {
-    this.getComments();
+    this.getDetails();
   }
 
-  handleSubmitComment(title, text) {
+  handleSubmitComment(text) {
     axios.post('/comment',
-      { authorId: this.props.user.user_id, author: this.props.user.username, authorAvatar: this.props.user.imghash, restaurantId: this.props.id, text, title})
+      { authorId: this.props.user.user_id, author: this.props.user.username, authorAvatar: this.props.user.imghash, restaurantId: this.props.id, text})
     .then((response) => {
       if (response.status === 200) this.getComments();
+    })
+  }
+
+  getDetails() {
+    axios.get(`/restaurant?restaurantId=${this.props.id}`)
+    .then(({data}) => {
+      this.setState({details: data})
+      this.getComments();
     })
   }
 
@@ -36,8 +47,17 @@ export default class RestaurantModal extends Component {
     return (
       <Modal show={this.props.show} onHide={this.props.hideRestaurant} >
         <Modal.Header closeButton>
-          <Modal.Title>{this.props.name}</Modal.Title>
-          {this.props.address}
+          <div className="restaurant-header">
+            <Modal.Title>{this.props.name}</Modal.Title>
+            <div>{this.state.details.phone}</div>
+            <div>{this.props.address}</div>
+          </div>
+          <div className="restaurant-items">
+            <div className="restaurant-title">
+              {this.state.details.hours ? <Hours hours={this.state.details.hours}/> : ''}
+            </div>
+            <StarRating className="star-rating"/>
+          </div>
         </Modal.Header>
         <Modal.Body>
           {this.state.comments.map((comment, idx) => (<Comment {...comment} key={idx} />))}

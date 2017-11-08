@@ -7,8 +7,9 @@ var db = require('../db/index.js');
 var authenticate = require('./authenticate.js');
 var authorize = require('./authorize.js');
 var comment = require('./comment.js');
+var restaurant = require('./restaurant.js');
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '5mb'}));
 app.use(morgan('dev'));
 app.use(express.static(__dirname + '/../client/public'));
 
@@ -30,5 +31,7 @@ app.post('/user/validate', (req, res) => {
 app.use('/authenticate', authenticate);
 
 app.use('/comment', comment);
+
+app.use('/restaurant', restaurant);
 
 app.listen(3000, () => console.log('listening on port 3000'));
