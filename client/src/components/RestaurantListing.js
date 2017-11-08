@@ -1,8 +1,14 @@
 import React from 'react';
 
-export default (props) => (
-  <div className="listing">
-    <h6>{props.name}</h6>
-    <p>{props.address}</p>
-  </div>
-);
+export default (props) => {
+  var { name, address, id } = props;
+  function selectThisRestaurant() {
+    props.selectRestaurant({ name, address, id });
+  }
+  return (
+    <div className="listing" onClick={selectThisRestaurant}>
+      <h6>{name}</h6>
+      <p>{address}</p>
+    </div>
+  );
+}

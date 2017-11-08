@@ -17,4 +17,15 @@ CREATE TABLE restaurants (
   name VARCHAR(30) NOT NULL,
   address VARCHAR(60) NOT NULL,
   PRIMARY KEY (restaurant_id)
-)
+);
+
+CREATE TABLE comments (
+  comment_id INT AUTO_INCREMENT,
+  author_id INT NOT NULL,
+  restaurant_id VARCHAR(30) NOT NULL,
+  title VARCHAR(128) NOT NULL,
+  body VARCHAR(1000) NOT NULL,
+  PRIMARY KEY (comment_id),
+  FOREIGN KEY (author_id) REFERENCES users(user_id)
+  -- FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
+);
