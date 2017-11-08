@@ -1,5 +1,5 @@
 node_modules
 client/public/bundle.js
 .env
-server/images
+client/public/images
 **/.DS_Store
