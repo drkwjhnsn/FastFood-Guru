@@ -76,10 +76,10 @@ function verifyUser(username) {
   })
 }
 
-function submitComment({ restaurantId, authorId, title, text }) {
+function submitComment({ restaurantId, authorId, title, text, author, authorAvatar }) {
   return new Promise((resolve, reject) => {
     connection.query(
-      `INSERT INTO comments (restaurant_id, author_id, title, body) VALUES ('${restaurantId}', '${authorId}', '${title}', '${text}')`,
+      `INSERT INTO comments (restaurant_id, author_id, title, body, author, author_avatar) VALUES ('${restaurantId}', '${authorId}', '${title}', '${text}', '${author}', '${authorAvatar}')`,
       (err, results) => {
         if (err) return reject(err);
         resolve();

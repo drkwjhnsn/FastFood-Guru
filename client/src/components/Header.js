@@ -12,7 +12,7 @@ export default (props) => (
     <Navbar.Collapse>
       <Nav pullRight>
         {
-          (props.userId) ?
+          (props.user) ?
           <NavItem eventKey={1} href="#" onSelect={props.signOut}>Sign Out</NavItem> :
           <NavItem eventKey={1} href="#" onSelect={props.signIn}>Sign In</NavItem>
         }

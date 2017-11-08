@@ -17,7 +17,10 @@ comment.get('/restaurant', (req, res) => {
       return {
         title: comment.title,
         text: comment.body,
-        author: comment.author_id,
+        author: comment.author,
+        authorId: comment.author_id,
+        authorAvatar: comment.author_avatar,
+        restaurantId: comment.restaurant_id
       }
     })
     res.status(200).send(comments)

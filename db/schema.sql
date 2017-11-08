@@ -25,6 +25,8 @@ CREATE TABLE comments (
   restaurant_id VARCHAR(30) NOT NULL,
   title VARCHAR(128) NOT NULL,
   body VARCHAR(1000) NOT NULL,
+  author VARCHAR(30) NOT NULL,
+  author_avatar VARCHAR(64),
   PRIMARY KEY (comment_id),
   FOREIGN KEY (author_id) REFERENCES users(user_id)
   -- FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
