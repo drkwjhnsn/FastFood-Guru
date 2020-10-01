@@ -10,19 +10,16 @@ export default class SignModal extends Component {
       usernameLogin: '',
       passwordLogin: '',
       username: '',
-      zip: '',
       password: '',
       confirm: '',
       avatar: null,
       nameValid: null,
-      zipValid: null,
       confirmValid: null
     }
     this.handleUsernameLogin = this.handleUsernameLogin.bind(this);
     this.handlePasswordLogin = this.handlePasswordLogin.bind(this);
     this.handleAvatar = this.handleAvatar.bind(this);
     this.handleUsername = this.handleUsername.bind(this);
-    this.handleZip = this.handleZip.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleConfirm = this.handleConfirm.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,12 +47,6 @@ export default class SignModal extends Component {
     });
   }
 
-  handleZip(e) {
-    var zip = e.target.value;
-    var zipValid = (zip.length === 5 && Number.isInteger(parseInt(zip, 10))) ? 'success' : 'error';
-    this.setState({ zip, zipValid });
-  }
-
   handlePassword(e) {
     this.setState({ password: e.target.value });
   }
@@ -67,15 +58,15 @@ export default class SignModal extends Component {
   }
 
   validateSignup() {
-    var { nameValid, zipValid, confirmValid } = this.state;
-    return ( nameValid === 'success' && zipValid === 'success' && confirmValid === 'success' );
+    var { nameValid, confirmValid } = this.state;
+    return ( nameValid === 'success' && confirmValid === 'success' );
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    var { username, zip, password, avatar, confirm, activeKey } = this.state;
-    if (activeKey === 1) this.props.signIn({ username, password });
-    if (activeKey === 2 && this.validateSignup()) this.props.signUp({ username, zip, password, avatar });
+    var { username, password, avatar, confirm, activeKey, usernameLogin, passwordLogin } = this.state;
+    if (activeKey === 1) this.props.signIn({ usernameLogin, passwordLogin });
+    if (activeKey === 2 && this.validateSignup()) this.props.signUp({ username, password, avatar });
   }
 
   displayTab(key, e) {
@@ -84,7 +75,7 @@ export default class SignModal extends Component {
 
   render() {
     var { show, hide } = this.props;
-    var { username, zip, password, confirm, avatar, nameValid, zipValid, confirmValid, activeKey } = this.state;
+    var { username, password, confirm, avatar, nameValid, confirmValid, activeKey } = this.state;
 
     if (activeKey === 1) {
       var content = (
@@ -124,14 +115,6 @@ export default class SignModal extends Component {
             </Col>
             <Col sm={10}>
               <FormControl value={username} type="text" placeholder="Username" onChange={this.handleUsername}/>
-            </Col>
-          </FormGroup>
-          <FormGroup validationState={zipValid} >
-            <Col componentClass={ControlLabel} sm={2}>
-              Zip Code
-            </Col>
-            <Col sm={10}>
-              <FormControl value={zip} type="text" placeholder="Zip" onChange={this.handleZip}/>
             </Col>
           </FormGroup>
           <FormGroup validationState={confirmValid}>

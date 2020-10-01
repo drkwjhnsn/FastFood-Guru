@@ -35,13 +35,15 @@ export default class App extends Component {
     this.setState({ signInModal: false });
   }
 
-  signIn({ username, password }) {
+  signIn({ usernameLogin, passwordLogin }) {
+    var username = usernameLogin;
+    var password = passwordLogin;
     axios.post('/authenticate/signin', { username, password })
     .then(({ data }) => {
       var { userId } = unwrap(data);
       this.setState({ userId });
       window.localStorage.setItem('authorization', data);
-      this.hideSignin();
+      this.hideSignIn();
     });
   }
 
@@ -82,7 +84,7 @@ export default class App extends Component {
   render() {
     var { userId, signInModal } = this.state;
     return (
-      <div className="container-fluid" >
+      <div>
         <Header userId={userId} signIn={this.showSignIn} signOut={this.signOut} />
         <Main userId={userId}/>
         <SignModal show={signInModal} hide={this.hideSignIn} signIn={this.signIn} signUp={this.signUp} checkName={this.checkName} />

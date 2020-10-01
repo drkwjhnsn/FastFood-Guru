@@ -2,11 +2,16 @@ var authenticate = require('express').Router();
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var db = require('../db/index.js');
+var fs = require('fs');
 
 authenticate.post('/signup', (req, res) => {
-  var { username, password, zip, avatar } = req.body;
+  var { username, password, avatar } = req.body;
   var { hash, salt } = generateHash(password);
-  db.createUser(hash, salt, username, zip, avatar)
+
+  writeAvatar(avatar)
+  .then((imghash) => {
+    return db.createUser(hash, salt, username, imghash);
+  })
   .then((results) => {
     res.status(200).send(createToken({userId: results.insertId}));
   })
@@ -26,7 +31,10 @@ authenticate.post('/signin', (req, res) => {
       res.status(403).send("Incorrect password");
     }
   })
-  .catch((e) => res.status(500).send(e));
+  .catch((e) => {
+    console.log(e);
+    res.status(500).send(e)
+  });
 });
 
 function generateSalt(length) {
@@ -42,6 +50,24 @@ function generateHash(password, salt = generateSalt(16)) {
 
 function createToken(payload) {
   return jwt.sign(payload, process.env.SECRET, {expiresIn: '1 day'});
+}
+
+function writeAvatar(b64) {
+  return new Promise((resolve, reject) => {
+    if (!b64) return resolve('default');
+    var b64Avatar = b64.split(',')[1];
+    var hash = generateFilename(b64Avatar);
+    fs.writeFile(`./server/images/avatars/${hash}.png`, b64Avatar, 'base64', (err) => {
+      if (err) return reject(err);
+      return resolve(hash);
+    })
+  })
+}
+
+var generateFilename = (data) => {
+  var hash = crypto.createHash('sha256');
+  hash.update(data);
+  return hash.digest('hex');
 }
 
 module.exports = authenticate;

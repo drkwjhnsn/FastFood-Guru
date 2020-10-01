@@ -1,3 +1,16 @@
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
 input[type="file"] {
   height: 1px;
   opacity: 0;
@@ -5,7 +18,7 @@ input[type="file"] {
 
 label[for="avatar-input"] {
   text-align: center;
-  border: solid 1px #CCC;
+  /*border: solid 1px #CCC;*/
   border-radius: 4px;
   padding: 3px;
   width: 171px;
@@ -16,5 +29,31 @@ canvas {
 }
 
 #map {
-  height: 80%;
+  height: 100%;
+  width: 60%;
+}
+
+.navbar {
+  border-left: 0px;
+  border-right: 0px;
+  margin: 0px;
+}
+
+#main {
+  height: calc(100% - 50px);
+  display: flex;
+}
+
+.place-list {
+  height: 100%;
+  width: 40%;
+  overflow-y: scroll;
+}
+.listing {
+  width: 100%;
+  height: 75px;
+  padding: 5px;
+  border: solid 1px #333;
+  border-top: none;
+  overflow-y: hidden;
 }

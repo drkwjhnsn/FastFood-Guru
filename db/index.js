@@ -1,5 +1,4 @@
 var mysql = require('mysql');
-var fs = require('fs');
 var crypto = require('crypto');
 
 connection = mysql.createConnection({
@@ -38,22 +37,15 @@ function getUserFromId(user_id) {
   });
 }
 
-function createUser(hash, salt, username, zip, avatar) {
+function createUser(hash, salt, username, imghash) {
   return new Promise((resolve, reject) => {
-    writeAvatar(avatar)
-    .then((imghash) => {
-
-      connection.query(
-        `INSERT INTO users (hash, salt, username, zip, imghash) VALUES ('${hash}', '${salt}', '${username}', '${zip}', '${imghash}')`,
-        (err, results) => {
-          if (err) return reject(err);
-          return resolve(results);
-        }
-      );
-
-
-    })
-
+    connection.query(
+      `INSERT INTO users (hash, salt, username, imghash) VALUES ('${hash}', '${salt}', '${username}', '${imghash}')`,
+      (err, results) => {
+        if (err) return reject(err);
+        return resolve(results);
+      }
+    );
   });
 }
 
@@ -61,24 +53,6 @@ function createUser(hash, salt, username, zip, avatar) {
 
 // var base64Data = req.body[req.query.part].path.split(',')[1];
 // var fileName = generateFilename(base64Data);
-
-
-function writeAvatar(b64) {
-  return new Promise((resolve, reject) => {
-    var b64Avatar = b64.split(',')[1];
-    var hash = generateHash(b64Avatar);
-    fs.writeFile(`./db/avatars/${hash}.png`, b64Avatar, 'base64', (err) => {
-      if (err) return reject(err);
-      return resolve(hash);
-    })
-  })
-}
-
-var generateHash = (data) => {
-  var hash = crypto.createHash('sha256');
-  hash.update(data);
-  return hash.digest('hex');
-}
 
 // fs.writeFile(`./server/images/${fileName}.png`, base64Data, 'base64', (err) => {
 //   if (err) console.log(err);
@@ -102,4 +76,4 @@ function verifyUser(username) {
   })
 }
 
-module.exports = { getUserFromId, createUser, verifyUser, checkIfNameExists, writeAvatar };
+module.exports = { getUserFromId, createUser, verifyUser, checkIfNameExists };

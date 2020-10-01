@@ -7,16 +7,6 @@ var db = require('../db/index.js');
 var authenticate = require('./authenticate.js');
 var authorize = require('./authorize.js');
 
-// function addHeaders(req, res, next) {
-//   res.setHeader('access-control-allow-origin', '*')
-//   res.setHeader('access-control-allow-methods', 'GET, POST, PUT, DELETE, OPTIONS')
-//   res.setHeader('access-control-allow-headers', 'content-type, accept')
-//   res.setHeader('Content-Type', '*')
-//   console.log(res.headers);
-//   next();
-// }
-// app.use(addHeaders);
-
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(express.static(__dirname + '/../client/public'));
