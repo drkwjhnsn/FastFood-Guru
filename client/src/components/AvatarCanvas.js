@@ -51,7 +51,7 @@ export default class AvatarCanvas extends Component {
       <div>
         <canvas width="171px" height="180px" id="canvas"></canvas>
         <input id="avatar-input" type="file" onChange={this.handleAvatar}/>
-        <label htmlFor="avatar-input">Choose Profile Picture</label>
+        <label id="avatar-button" htmlFor="avatar-input">Choose Profile Picture</label>
       </div>
     )
   }

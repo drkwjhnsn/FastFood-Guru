@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
+import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 import debounce from './../utils/debounce.js';
 import styles from './mapstyle.js';
 import PlaceList from './PlaceList.js';
+import RestaurantModal from './RestaurantModal.js';
 
 export default class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      restaurants: []
+      restaurants: [],
+      currentRestaurant: null,
     };
     this.markers = [];
     this.chains = [
@@ -33,6 +36,8 @@ export default class Map extends Component {
       `Carl's Jr.`,
     ];
     this.updateMap = debounce(this.updateMap.bind(this), 500, false);
+    this.selectRestaurant = this.selectRestaurant.bind(this);
+    this.hideRestaurant = this.hideRestaurant.bind(this);
   }
 
   componentWillMount() {
@@ -67,7 +72,6 @@ export default class Map extends Component {
           address: restaurant.vicinity,
         };
       });
-      console.log(results[0]);
       this.setState({ restaurants });
       results.forEach((place) => places[place.id] = place);
       for (var id in this.markers) {
@@ -115,11 +119,20 @@ export default class Map extends Component {
     })
   }
 
+  selectRestaurant(restaurant) {
+    this.setState({currentRestaurant: restaurant});
+  }
+
+  hideRestaurant() {
+    this.setState({currentRestaurant: null});
+  }
+
   render() {
     return (
       <div id="main">
         <div id="map"></div>
-        <PlaceList restaurants={this.state.restaurants} />
+        <PlaceList restaurants={this.state.restaurants} selectRestaurant={this.selectRestaurant} />
+        {(!!this.state.currentRestaurant) ? <RestaurantModal show={!!this.state.currentRestaurant} hideRestaurant={this.hideRestaurant} signIn={this.props.signIn} userId={this.props.userId} { ...this.state.currentRestaurant } /> : ''}
       </div>
     );
   }

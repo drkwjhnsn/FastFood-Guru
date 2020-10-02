@@ -76,4 +76,28 @@ function verifyUser(username) {
   })
 }
 
-module.exports = { getUserFromId, createUser, verifyUser, checkIfNameExists };
+function submitComment({ restaurantId, authorId, title, text }) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `INSERT INTO comments (restaurant_id, author_id, title, body) VALUES ('${restaurantId}', '${authorId}', '${title}', '${text}')`,
+      (err, results) => {
+        if (err) return reject(err);
+        resolve();
+      }
+    )
+  })
+}
+
+function getRestaurantComments(restaurant_id) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `SELECT * FROM comments WHERE restaurant_id = '${restaurant_id}'`,
+      (err, results) => {
+        if (err) return reject(err);
+        resolve(results);
+      }
+    )
+  })
+}
+
+module.exports = { getUserFromId, createUser, verifyUser, checkIfNameExists, submitComment, getRestaurantComments };

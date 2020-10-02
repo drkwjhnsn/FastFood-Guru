@@ -86,8 +86,8 @@ export default class App extends Component {
     return (
       <div>
         <Header userId={userId} signIn={this.showSignIn} signOut={this.signOut} />
-        <Main userId={userId}/>
-        <SignModal show={signInModal} hide={this.hideSignIn} signIn={this.signIn} signUp={this.signUp} checkName={this.checkName} />
+        <Main userId={userId} signIn={this.showSignIn}/>
+        {this.state.signInModal ? <SignModal show={signInModal} hide={this.hideSignIn} signIn={this.signIn} signUp={this.signUp} checkName={this.checkName} /> : ''}
       </div>
     );
   }
