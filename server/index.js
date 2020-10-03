@@ -17,7 +17,7 @@ app.get('/user', authorize, (req, res) => {
   .then((results) => {
     results.hash = undefined;
     results.salt = undefined;
-    res.status(200).send(JSON.stringify(results));
+    res.status(200).send(results);
   })
 });
 

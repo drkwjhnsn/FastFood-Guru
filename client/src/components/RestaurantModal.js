@@ -19,7 +19,7 @@ export default class RestaurantModal extends Component {
 
   handleSubmitComment(title, text) {
     axios.post('/comment',
-      { authorId: this.props.userId, restaurantId: this.props.id, text, title})
+      { authorId: this.props.user.user_id, author: this.props.user.username, authorAvatar: this.props.user.imghash, restaurantId: this.props.id, text, title})
     .then((response) => {
       if (response.status === 200) this.getComments();
     })
@@ -41,7 +41,7 @@ export default class RestaurantModal extends Component {
         </Modal.Header>
         <Modal.Body>
           {this.state.comments.map((comment, idx) => (<Comment {...comment} key={idx} />))}
-          {this.props.userId ?
+          {this.props.user ?
             <CommentForm handleSubmit={this.handleSubmitComment}/> :
             <a href="#" onClick={this.props.signIn}>Sign in to submit a comment</a>
           }

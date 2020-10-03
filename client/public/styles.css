@@ -66,9 +66,20 @@ canvas {
   cursor: pointer;
   background-color: #666;
 }
-/*.comment {
+
+.comment-avatar {
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+.comment-item {
+  display: flex;
+}
+
+.comment {
+  flex-direction: column;
   width: 100%;
-}*/
+}
 .author {
   width: 100%;
   text-align: right;

@@ -132,7 +132,7 @@ export default class Map extends Component {
       <div id="main">
         <div id="map"></div>
         <PlaceList restaurants={this.state.restaurants} selectRestaurant={this.selectRestaurant} />
-        {(!!this.state.currentRestaurant) ? <RestaurantModal show={!!this.state.currentRestaurant} hideRestaurant={this.hideRestaurant} signIn={this.props.signIn} userId={this.props.userId} { ...this.state.currentRestaurant } /> : ''}
+        {(!!this.state.currentRestaurant) ? <RestaurantModal show={!!this.state.currentRestaurant} hideRestaurant={this.hideRestaurant} signIn={this.props.signIn} user={this.props.user} { ...this.state.currentRestaurant } /> : ''}
       </div>
     );
   }

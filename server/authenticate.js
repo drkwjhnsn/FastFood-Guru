@@ -57,7 +57,7 @@ function writeAvatar(b64) {
     if (!b64) return resolve('default');
     var b64Avatar = b64.split(',')[1];
     var hash = generateFilename(b64Avatar);
-    fs.writeFile(`./server/images/avatars/${hash}.png`, b64Avatar, 'base64', (err) => {
+    fs.writeFile(`./client/public/images/avatars/${hash}.png`, b64Avatar, 'base64', (err) => {
       if (err) return reject(err);
       return resolve(hash);
     })

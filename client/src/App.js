@@ -8,7 +8,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userId: null,
+      user: null,
       signInModal: false
     };
 
@@ -22,9 +22,14 @@ export default class App extends Component {
   componentWillMount() {
     var token = window.localStorage.getItem('authorization');
     if (token) {
-      axios.defaults.headers.common['authorization'] = token;
+      this.setToken(token);
       this.getUserInfo(token);
     }
+  }
+
+  setToken(token) {
+    window.localStorage.setItem('authorization', token);
+    axios.defaults.headers.common['authorization'] = token;
   }
 
   showSignIn() {
@@ -40,9 +45,8 @@ export default class App extends Component {
     var password = passwordLogin;
     axios.post('/authenticate/signin', { username, password })
     .then(({ data }) => {
-      var { userId } = unwrap(data);
-      this.setState({ userId });
-      window.localStorage.setItem('authorization', data);
+      this.setToken(data);
+      this.getUserInfo();
       this.hideSignIn();
     });
   }
@@ -50,9 +54,8 @@ export default class App extends Component {
   signUp({ username, password, zip, avatar }) {
     axios.post('/authenticate/signup', { username, password, zip, avatar })
     .then(({ data }) => {
-      var { userId } = unwrap(data);
-      this.setState({ userId });
-      window.localStorage.setItem('authorization', data);
+      this.setToken(data);
+      this.getUserInfo();
       this.hideSignIn();
     });
   }
@@ -60,7 +63,7 @@ export default class App extends Component {
   getUserInfo(token) {
     axios.get('/user')
     .then(({ data }) => {
-      this.setState({ userId: data.user_id });
+      this.setState({ user: data });
     })
     .catch((err) => {
       console.log(err);
@@ -69,7 +72,7 @@ export default class App extends Component {
   }
 
   signOut() {
-    this.setState({ userId: null });
+    this.setState({ user: null });
     window.localStorage.removeItem('authorization');
   }
 
@@ -82,11 +85,11 @@ export default class App extends Component {
   }
 
   render() {
-    var { userId, signInModal } = this.state;
+    var { user, signInModal } = this.state;
     return (
       <div>
-        <Header userId={userId} signIn={this.showSignIn} signOut={this.signOut} />
-        <Main userId={userId} signIn={this.showSignIn}/>
+        <Header user={user} signIn={this.showSignIn} signOut={this.signOut} />
+        <Main user={user} signIn={this.showSignIn}/>
         {this.state.signInModal ? <SignModal show={signInModal} hide={this.hideSignIn} signIn={this.signIn} signUp={this.signUp} checkName={this.checkName} /> : ''}
       </div>
     );
