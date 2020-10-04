@@ -15,7 +15,6 @@ comment.get('/restaurant', (req, res) => {
   .then((comments) => {
     comments = comments.map((comment) => {
       return {
-        title: comment.title,
         text: comment.body,
         author: comment.author,
         authorId: comment.author_id,

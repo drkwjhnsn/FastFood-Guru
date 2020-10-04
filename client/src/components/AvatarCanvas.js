@@ -22,18 +22,18 @@ export default class AvatarCanvas extends Component {
     var { width, height } = this.img;
     if (width > height) {
       var factor = height / 180;
-      var sWidth = factor * 171;
+      var sWidth = factor * 180;
       var sx = (width - sWidth) / 2;
       var sy = 0;
       var sHeight = height;
     } else {
-      var factor = width / 171;
+      var factor = width / 180;
       var sHeight = factor * 180;
       var sy = (height - sHeight) / 2;
       var sx = 0;
       var sWidth = width;
     }
-    this.ctx.drawImage(this.img, sx, sy, sWidth, sHeight, 0, 0, 171, 180);
+    this.ctx.drawImage(this.img, sx, sy, sWidth, sHeight, 0, 0, 180, 180);
     if (this.state.src !== 'defaultAvatar.png') {
       var b64 = this.canvas.toDataURL("image/png");
       this.props.postImage(b64);
@@ -49,7 +49,7 @@ export default class AvatarCanvas extends Component {
     this.img.src = this.state.src;
     return (
       <div>
-        <canvas width="171px" height="180px" id="canvas"></canvas>
+        <canvas width="180px" height="180px" id="canvas"></canvas>
         <input id="avatar-input" type="file" onChange={this.handleAvatar}/>
         <label id="avatar-button" htmlFor="avatar-input">Choose Profile Picture</label>
       </div>
