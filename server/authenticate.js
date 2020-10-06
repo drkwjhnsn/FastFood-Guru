@@ -19,6 +19,7 @@ authenticate.post('/signup', (req, res) => {
     console.log(e);
     res.status(500).send(e)});
 });
+//shit
 
 authenticate.post('/signin', (req, res) => {
   var { username, password } = req.body;
