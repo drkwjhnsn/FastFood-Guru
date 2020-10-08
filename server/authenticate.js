@@ -26,13 +26,13 @@ authenticate.post('/signin', (req, res) => {
   db.verifyUser(username)
   .then((results) => {
     var { hash } = generateHash(password, results.salt);
-    if (hash === results.hash) {
+    if (hash === results.hash) {// skldjflksdjf
       res.status(200).send(createToken({userId: results.user_id}));
     } else {
       res.status(403).send("Incorrect password");//slkdjflksj
     }
   })
-  .catch((e) => {
+  .catch((e) => {//lkasjdflj
     console.log(e);
     res.status(500).send(e)
   });
